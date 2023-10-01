@@ -4,7 +4,7 @@
 
 # Group 10
  - Jai Nijhawan (1155174)
- - Tushar Sharma (1114455)
+ - Tushar Sharma (1114455) 
 
 
 ## Features
