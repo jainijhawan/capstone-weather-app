@@ -3,7 +3,8 @@
 - The Weather App provides real-time weather information based on the user's current location, as well as the ability to search for and save favorite locations for convenient access.
 
 # Group 10
- - Jai Nijhawan (1155174) 
+ - Jai Nijhawan (1155174)
+ - Tushar Sharma (1114455)
 
 
 ## Features
