@@ -6,6 +6,7 @@
  - Jai Nijhawan (1155174)
  - Tushar Sharma (1114455) 
  - Rajat Kumar (1109750)
+ - Harwinderjit Kaur (1124530)
 
 
 ## Features
