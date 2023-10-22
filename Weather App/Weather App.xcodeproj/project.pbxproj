@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		578156572AE5BF670082CAA4 /* AQIDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578156562AE5BF670082CAA4 /* AQIDataModel.swift */; };
 		D67F6A3E2AE5AE5E0003D50C /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */; };
 		D67F6A412AE5AEA90003D50C /* WeatherServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A402AE5AEA90003D50C /* WeatherServices.swift */; };
 		DE972ACA2ACA053A00188639 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE972AC92ACA053A00188639 /* AppDelegate.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		578156562AE5BF670082CAA4 /* AQIDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQIDataModel.swift; sourceTree = "<group>"; };
 		D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
 		D67F6A402AE5AEA90003D50C /* WeatherServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServices.swift; sourceTree = "<group>"; };
 		DE972AC62ACA053A00188639 /* Weather App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */,
+				578156562AE5BF670082CAA4 /* AQIDataModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D67F6A3E2AE5AE5E0003D50C /* CurrentWeatherData.swift in Sources */,
+				578156572AE5BF670082CAA4 /* AQIDataModel.swift in Sources */,
 				D67F6A412AE5AEA90003D50C /* WeatherServices.swift in Sources */,
 				DE972ACE2ACA053A00188639 /* ViewController.swift in Sources */,
 				DE972ACA2ACA053A00188639 /* AppDelegate.swift in Sources */,
