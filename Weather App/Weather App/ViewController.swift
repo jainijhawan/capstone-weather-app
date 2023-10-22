@@ -11,7 +11,7 @@ import CoreLocation
 class ViewController: UIViewController {
     
     var locationManager: CLLocationManager?
-    
+    let weatherService = WeatherServices.shared
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -19,6 +19,13 @@ class ViewController: UIViewController {
         locationManager?.requestWhenInUseAuthorization()
     }
     
+    func requestWeatherFor(lat: Double, lon: Double) {
+        weatherService.getCurrentCityData(lat: lat, lon: lon) { isSuccess, weatherData in
+            if isSuccess {
+                print(weatherData)
+            }
+        }
+    }
     
 }
 
@@ -35,6 +42,7 @@ extension ViewController: CLLocationManagerDelegate {
                 .authorized:
             guard let locValue = manager.location?.coordinate else { return }
             print("locations = \(locValue.latitude) \(locValue.longitude)")
+            requestWeatherFor(lat: Double(locValue.latitude), lon: Double(locValue.longitude))
         @unknown default:
             break
         }
