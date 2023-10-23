@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		578156572AE5BF670082CAA4 /* AQIDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578156562AE5BF670082CAA4 /* AQIDataModel.swift */; };
+		86488E572AE6194200359965 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86488E562AE6194200359965 /* Extensions.swift */; };
 		D67F6A3E2AE5AE5E0003D50C /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */; };
 		D67F6A412AE5AEA90003D50C /* WeatherServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A402AE5AEA90003D50C /* WeatherServices.swift */; };
 		DE972ACA2ACA053A00188639 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE972AC92ACA053A00188639 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		578156562AE5BF670082CAA4 /* AQIDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQIDataModel.swift; sourceTree = "<group>"; };
+		86488E562AE6194200359965 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
 		D67F6A402AE5AEA90003D50C /* WeatherServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServices.swift; sourceTree = "<group>"; };
 		DE972AC62ACA053A00188639 /* Weather App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 				DE972AC92ACA053A00188639 /* AppDelegate.swift */,
 				DE972ACB2ACA053A00188639 /* SceneDelegate.swift */,
 				DE972ACD2ACA053A00188639 /* ViewController.swift */,
+				86488E562AE6194200359965 /* Extensions.swift */,
 				D67F6A3C2AE5AE4B0003D50C /* Model */,
 				DE972ACF2ACA053A00188639 /* Main.storyboard */,
 				DE972AD22ACA053B00188639 /* Assets.xcassets */,
@@ -169,6 +172,7 @@
 				DE972ACE2ACA053A00188639 /* ViewController.swift in Sources */,
 				DE972ACA2ACA053A00188639 /* AppDelegate.swift in Sources */,
 				DE972ACC2ACA053A00188639 /* SceneDelegate.swift in Sources */,
+				86488E572AE6194200359965 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
