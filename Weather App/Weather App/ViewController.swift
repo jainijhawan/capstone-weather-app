@@ -34,7 +34,6 @@ class ViewController: UIViewController {
     func requestWeatherFor(lat: Double, lon: Double) {
         weatherService.getCurrentCityData(lat: lat, lon: lon) { isSuccess, weatherData in
             if isSuccess {
-                print(weatherData)
                 DispatchQueue.main.async {
                     guard let weatherData = weatherData else { return }
                     self.setupUI(data: weatherData)
@@ -45,7 +44,6 @@ class ViewController: UIViewController {
     func requestAQIFor(lat: Double, lon: Double) {
         weatherService.getCurrentLocationAQI(lat: lat, lon: lon) { isSuccess, AQIData in
             if isSuccess {
-                print(AQIData)
                 DispatchQueue.main.async {
                     self.aqiLabel.text = "AQI: \(AQIData?.list.first?.main.aqi ?? 0)"
                 }
