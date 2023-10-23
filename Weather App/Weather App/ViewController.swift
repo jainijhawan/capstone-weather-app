@@ -12,8 +12,18 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
+    
+    @IBOutlet weak var minimumTempLabel: UILabel!
+    @IBOutlet weak var currentDateLabel: UILabel!
+    @IBOutlet weak var currentDayLabel: UILabel!
+    @IBOutlet weak var maximumTempLabel: UILabel!
+    @IBOutlet weak var metricLabel: UILabel!
+    @IBOutlet weak var currentTempratureLabel: UILabel!
+    @IBOutlet weak var cityNameLabel: UILabel!
+    
     var locationManager: CLLocationManager?
     let weatherService = WeatherServices.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -26,7 +36,8 @@ class ViewController: UIViewController {
             if isSuccess {
                 print(weatherData)
                 DispatchQueue.main.async {
-                    self.weatherConditionLabel.text = "Weather Condition \(weatherData?.weather?.first?.description ?? "")"
+                    guard let weatherData = weatherData else { return }
+                    self.setupUI(data: weatherData)
                 }
             }
         }
@@ -36,7 +47,7 @@ class ViewController: UIViewController {
             if isSuccess {
                 print(AQIData)
                 DispatchQueue.main.async {
-                    self.aqiLabel.text = " AQI \(AQIData?.list.first?.main.aqi ?? 0)"
+                    self.aqiLabel.text = "AQI: \(AQIData?.list.first?.main.aqi ?? 0)"
                 }
             }
         }
@@ -61,5 +72,18 @@ extension ViewController: CLLocationManagerDelegate {
         @unknown default:
             break
         }
+    }
+}
+
+extension ViewController {
+    func setupUI(data: CurrentWeatherData) {
+        currentTempratureLabel.text = data.main?.temp?.getTempInCelcius() ?? ""
+        currentDayLabel.text = Date().dayOfWeek()
+        currentDateLabel.text = Date().getCurrentDate()
+        metricLabel.text = "°C"
+        maximumTempLabel.text = (data.main?.tempMax?.getTempInCelcius() ?? "") + "°C"
+        minimumTempLabel.text = (data.main?.tempMin?.getTempInCelcius() ?? "") + "°C"
+        cityNameLabel.text = data.name ?? ""
+        weatherConditionLabel.text = data.weather?.first?.description?.capitalized ?? ""
     }
 }
