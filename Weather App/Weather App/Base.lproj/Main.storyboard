@@ -19,7 +19,7 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iuc-Xq-fRk">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                                <color key="backgroundColor" red="0.0" green="0.45882352939999999" blue="0.89019607840000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mEZ-iV-PZZ">
                                 <rect key="frame" x="281" y="358.33333333333331" width="33" height="24"/>
@@ -111,7 +111,7 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="underPageBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="40T-4Q-gKK" firstAttribute="centerY" secondItem="0tI-XX-YeB" secondAttribute="centerY" id="5xg-lX-uqB"/>
                             <constraint firstItem="hKT-Cy-5NE" firstAttribute="top" secondItem="r8o-iz-VoC" secondAttribute="bottom" constant="5" id="6gE-sh-eBi"/>
@@ -143,6 +143,7 @@
                     </view>
                     <connections>
                         <outlet property="aqiLabel" destination="gfZ-dC-K4Q" id="25t-3G-csh"/>
+                        <outlet property="backgroundAQIImageView" destination="iuc-Xq-fRk" id="LFK-B0-Oid"/>
                         <outlet property="cityNameLabel" destination="0tI-XX-YeB" id="aLU-51-u6c"/>
                         <outlet property="currentDateLabel" destination="hKT-Cy-5NE" id="Aje-PG-kMe"/>
                         <outlet property="currentDayLabel" destination="r8o-iz-VoC" id="vDL-uJ-MR4"/>
@@ -160,8 +161,8 @@
     </scenes>
     <resources>
         <image name="location.fill" catalog="system" width="128" height="119"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        <systemColor name="underPageBackgroundColor">
+            <color red="0.70980392156862748" green="0.71764705882352942" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

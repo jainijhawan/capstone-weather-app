@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
     
+    @IBOutlet weak var backgroundAQIImageView: UIImageView!
     @IBOutlet weak var minimumTempLabel: UILabel!
     @IBOutlet weak var currentDateLabel: UILabel!
     @IBOutlet weak var currentDayLabel: UILabel!
@@ -29,6 +30,20 @@ class ViewController: UIViewController {
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         locationManager?.requestWhenInUseAuthorization()
+        setDefaultVAlues()
+    }
+    
+    func setDefaultVAlues() {
+        [weatherConditionLabel,
+         aqiLabel,
+         minimumTempLabel,
+         currentDateLabel,
+         currentDayLabel,
+         maximumTempLabel,
+         metricLabel,
+         currentTempratureLabel,
+         cityNameLabel
+        ].forEach { $0?.text = "-"}
     }
     
     func requestWeatherFor(lat: Double, lon: Double) {
@@ -45,7 +60,8 @@ class ViewController: UIViewController {
         weatherService.getCurrentLocationAQI(lat: lat, lon: lon) { isSuccess, AQIData in
             if isSuccess {
                 DispatchQueue.main.async {
-                    self.aqiLabel.text = "AQI: \(AQIData?.list.first?.main.aqi ?? 0)"
+                    guard let AQIData = AQIData else { return }
+                    self.setupUIforAQI(data: AQIData)
                 }
             }
         }
@@ -75,13 +91,29 @@ extension ViewController: CLLocationManagerDelegate {
 
 extension ViewController {
     func setupUI(data: CurrentWeatherData) {
-        currentTempratureLabel.text = data.main?.temp?.getTempInCelcius() ?? ""
-        currentDayLabel.text = Date().dayOfWeek()
-        currentDateLabel.text = Date().getCurrentDate()
-        metricLabel.text = "°C"
-        maximumTempLabel.text = (data.main?.tempMax?.getTempInCelcius() ?? "") + "°C"
-        minimumTempLabel.text = (data.main?.tempMin?.getTempInCelcius() ?? "") + "°C"
-        cityNameLabel.text = data.name ?? ""
-        weatherConditionLabel.text = data.weather?.first?.description?.capitalized ?? ""
+        currentTempratureLabel.animateWith(text: data.main?.temp?.getTempInCelcius() ?? "")
+        currentDayLabel.animateWith(text: Date().dayOfWeek() ?? "")
+        currentDateLabel.animateWith(text: Date().getCurrentDate())
+        metricLabel.animateWith(text: "°C")
+        maximumTempLabel.animateWith(text: (data.main?.tempMax?.getTempInCelcius() ?? "") + "°C")
+        minimumTempLabel.animateWith(text: (data.main?.tempMin?.getTempInCelcius() ?? "") + "°C")
+        cityNameLabel.animateWith(text: data.name ?? "")
+        weatherConditionLabel.animateWith(text: data.weather?.first?.description?.capitalized ?? "")
     }
+    
+    func setupUIforAQI(data: AQIDataModel) {
+        guard let aqi = data.list.first?.main.aqi else { return }
+        aqiLabel.text = "AQI: \(aqi)"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            UIView.transition(with: self.backgroundAQIImageView,
+                              duration: 4,
+                              options: .transitionCrossDissolve,
+                              animations: {
+                self.backgroundAQIImageView.image = getAQIColorTextAndBG(aqi: Int(aqi)).image
+            },
+                              completion: nil)
+        }
+    }
+    
+   
 }
