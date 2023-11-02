@@ -130,32 +130,35 @@
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Delhi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VGm-fu-YMi">
-                                                    <rect key="frame" x="20" y="20" width="45" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delhi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VGm-fu-YMi">
+                                                    <rect key="frame" x="20" y="20" width="45" height="25"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="25" id="pVM-TZ-AES"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="°C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8b-c9-ilA">
-                                                    <rect key="frame" x="61.666666666666657" y="53" width="46.333333333333343" height="48"/>
-                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="41"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="°C" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N8b-c9-ilA">
+                                                    <rect key="frame" x="78.666666666666671" y="63" width="36" height="37.333333333333343"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="32"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="11" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IvL-fE-h2c">
-                                                    <rect key="frame" x="19.999999999999996" y="54" width="43.666666666666657" height="45.666666666666657"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-11" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IvL-fE-h2c">
+                                                    <rect key="frame" x="9.9999999999999964" y="55" width="58.666666666666657" height="53"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="39"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="N8b-c9-ilA" firstAttribute="centerY" secondItem="IvL-fE-h2c" secondAttribute="centerY" id="4xG-Iq-gDp"/>
                                                 <constraint firstItem="VGm-fu-YMi" firstAttribute="leading" secondItem="Vjr-Yo-UpO" secondAttribute="leading" constant="20" id="ANy-np-xIn"/>
-                                                <constraint firstAttribute="bottom" secondItem="IvL-fE-h2c" secondAttribute="bottom" constant="20" id="BL7-AE-9sx"/>
-                                                <constraint firstAttribute="trailing" secondItem="N8b-c9-ilA" secondAttribute="trailing" constant="20" id="Ell-ER-bAp"/>
-                                                <constraint firstItem="IvL-fE-h2c" firstAttribute="top" secondItem="VGm-fu-YMi" secondAttribute="bottom" constant="10" id="UhE-Fj-gx0"/>
-                                                <constraint firstItem="IvL-fE-h2c" firstAttribute="leading" secondItem="Vjr-Yo-UpO" secondAttribute="leading" constant="20" id="Zun-tf-Ib1"/>
+                                                <constraint firstItem="IvL-fE-h2c" firstAttribute="leading" secondItem="Vjr-Yo-UpO" secondAttribute="leading" constant="10" id="Ex8-xB-l5O"/>
+                                                <constraint firstItem="N8b-c9-ilA" firstAttribute="leading" secondItem="IvL-fE-h2c" secondAttribute="trailing" constant="10" id="Fu2-qi-XM3"/>
+                                                <constraint firstAttribute="bottom" secondItem="IvL-fE-h2c" secondAttribute="bottom" constant="20" id="WA9-Yx-zg8"/>
+                                                <constraint firstItem="IvL-fE-h2c" firstAttribute="top" secondItem="VGm-fu-YMi" secondAttribute="bottom" constant="10" id="YbC-Pa-gKd"/>
+                                                <constraint firstItem="N8b-c9-ilA" firstAttribute="centerY" secondItem="IvL-fE-h2c" secondAttribute="centerY" id="op4-zT-gY0"/>
                                                 <constraint firstItem="VGm-fu-YMi" firstAttribute="top" secondItem="Vjr-Yo-UpO" secondAttribute="top" constant="20" id="qrq-On-tUh"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
@@ -172,20 +175,39 @@
                                         </collectionViewCellContentView>
                                         <connections>
                                             <outlet property="cityNameLabel" destination="VGm-fu-YMi" id="0O8-cH-gYX"/>
+                                            <outlet property="metricLabel" destination="N8b-c9-ilA" id="lN1-3I-35I"/>
                                             <outlet property="tempratureLabel" destination="IvL-fE-h2c" id="4Av-5W-B0U"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="RoK-bJ-bCD">
+                                <rect key="frame" x="196.33333333333334" y="152.33333333333334" width="90.000000000000028" height="41"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="90" id="4f3-JZ-fbY"/>
+                                    <constraint firstAttribute="height" constant="40" id="cos-BT-wia"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="°C"/>
+                                    <segment title="°F"/>
+                                </segments>
+                                <color key="selectedSegmentTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <action selector="segmentControlTapped:" destination="BYZ-38-t0r" eventType="valueChanged" id="YnG-o4-IWc"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="underPageBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="RoK-bJ-bCD" firstAttribute="leading" secondItem="Dbq-Vx-BVe" secondAttribute="trailing" constant="20" id="2XG-Yn-bmU"/>
                             <constraint firstItem="40T-4Q-gKK" firstAttribute="centerY" secondItem="0tI-XX-YeB" secondAttribute="centerY" id="5xg-lX-uqB"/>
                             <constraint firstItem="hKT-Cy-5NE" firstAttribute="top" secondItem="r8o-iz-VoC" secondAttribute="bottom" constant="5" id="6gE-sh-eBi"/>
                             <constraint firstItem="hKT-Cy-5NE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6pB-Ho-TJA"/>
                             <constraint firstItem="bzp-bo-BtP" firstAttribute="centerX" secondItem="mEZ-iV-PZZ" secondAttribute="centerX" id="7ct-m1-JPr"/>
                             <constraint firstItem="xvv-9F-92z" firstAttribute="centerX" secondItem="tGu-cH-YuC" secondAttribute="centerX" id="A2g-EP-fLA"/>
+                            <constraint firstItem="RoK-bJ-bCD" firstAttribute="centerY" secondItem="14K-XP-QHf" secondAttribute="centerY" id="Ctm-dE-Jbe"/>
                             <constraint firstItem="xvv-9F-92z" firstAttribute="top" secondItem="tGu-cH-YuC" secondAttribute="bottom" constant="5" id="Dnd-CK-UJJ"/>
                             <constraint firstItem="Hp4-jf-VCl" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Gbj-Z2-9vc"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tGu-cH-YuC" secondAttribute="trailing" constant="20" id="GnX-Ph-UwJ"/>
@@ -221,6 +243,7 @@
                         <outlet property="currentTempratureLabel" destination="14K-XP-QHf" id="n37-uj-aVz"/>
                         <outlet property="maximumTempLabel" destination="xvv-9F-92z" id="6ww-oD-y7H"/>
                         <outlet property="metricLabel" destination="6Ga-vc-Vov" id="vEu-yG-Aox"/>
+                        <outlet property="metricSegmentControl" destination="RoK-bJ-bCD" id="4pp-bh-3iU"/>
                         <outlet property="minimumTempLabel" destination="bzp-bo-BtP" id="2Sh-8z-mQV"/>
                         <outlet property="savedCityCollectionView" destination="Hp4-jf-VCl" id="rsG-Ps-OsB"/>
                         <outlet property="weatherConditionLabel" destination="Ypa-QA-brP" id="EBe-T1-U9i"/>

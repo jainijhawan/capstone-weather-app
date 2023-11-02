@@ -78,3 +78,35 @@ func getAQIColorTextAndBG(aqi: Int) -> (color: UIColor, comment:String, image: U
           comment,
           bg)
 }
+
+func calculateCelsius(fahrenheit: Double) -> Double {
+    var celsius: Double
+    celsius = (fahrenheit - 32) * 5 / 9
+    return celsius
+}
+
+func calculateFahrenheit(celsius: Double) -> Double {
+    var fahrenheit: Double
+    fahrenheit = celsius * 9 / 5 + 32
+    return fahrenheit
+}
+
+func tempInFahrenheit(text: String?) -> String {
+  if let temp = Double(text!) {
+    let tempFar = calculateFahrenheit(celsius: temp)
+    let x = String(format: "%.0f", tempFar)
+    return x + ""
+  } else {
+    return ""
+  }
+}
+
+func tempInCelcius(text: String?) -> String {
+  if let temp = Double(text!) {
+    let tempFar = calculateCelsius(fahrenheit: temp)
+    let x = String(format: "%.0f", tempFar)
+    return x
+  } else {
+    return ""
+  }
+}

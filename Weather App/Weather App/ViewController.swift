@@ -10,6 +10,7 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var metricSegmentControl: UISegmentedControl!
     @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
@@ -70,6 +71,24 @@ class ViewController: UIViewController {
             }
         }
     }
+
+    @IBAction func segmentControlTapped(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex != 1 {
+            currentTempratureLabel.text = tempInCelcius(text: currentTempratureLabel.text)
+            minimumTempLabel.text = tempInCelcius(text: String(minimumTempLabel.text?.dropLast(2) ?? "")) + "°C"
+            maximumTempLabel.text = tempInCelcius(text: String(maximumTempLabel.text?.dropLast(2 ) ?? "")) + "°C"
+            metricLabel.text = "°C"
+        } else {
+            currentTempratureLabel.text = tempInFahrenheit(text: currentTempratureLabel.text)
+            minimumTempLabel.text = tempInFahrenheit(text: String(minimumTempLabel.text?.dropLast(2) ?? "")) + "°F"
+            maximumTempLabel.text = tempInFahrenheit(text: String(maximumTempLabel.text?.dropLast(2) ?? "")) + "°F"
+            metricLabel.text = "°F"
+        }
+        
+        savedCityCollectionView.reloadData()
+    }
+    
+    
 }
 
 extension ViewController: UICollectionViewDelegate,
@@ -83,7 +102,7 @@ extension ViewController: UICollectionViewDelegate,
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:SavedCityCollectionViewCell.self), for: indexPath) as? SavedCityCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.setupUI()
+        cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex)
         return cell
     }
 }

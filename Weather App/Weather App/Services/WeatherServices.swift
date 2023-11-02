@@ -5,7 +5,7 @@
 //  Created by Tushar Sharma on 2023-10-22.
 //
 
-import Foundation
+import Foundation // api.openweathermap.org/data/2.5/weather?q={city name}&appid={API key}
 
 class WeatherServices {
     static let shared = WeatherServices()
