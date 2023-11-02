@@ -10,6 +10,7 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
     
@@ -31,6 +32,9 @@ class ViewController: UIViewController {
         locationManager?.delegate = self
         locationManager?.requestWhenInUseAuthorization()
         setDefaultVAlues()
+        savedCityCollectionView.delegate = self
+        savedCityCollectionView.dataSource = self
+        savedCityCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
     }
     
     func setDefaultVAlues() {
@@ -65,6 +69,22 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+extension ViewController: UICollectionViewDelegate,
+                            UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:SavedCityCollectionViewCell.self), for: indexPath) as? SavedCityCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.setupUI()
+        return cell
     }
 }
 
@@ -114,6 +134,4 @@ extension ViewController {
                               completion: nil)
         }
     }
-    
-   
 }
