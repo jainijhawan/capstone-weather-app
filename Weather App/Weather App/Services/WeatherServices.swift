@@ -60,4 +60,26 @@ class WeatherServices {
                }
            }.resume()
        }
+    
+    func getCityNames(searchText: String, completion: @escaping (Bool, CityNameSuggestionModel?)->Void) {
+        let myUrl = "https://api.geoapify.com/v1/geocode/autocomplete?text=\(searchText)&type=city&format=json&apiKey=7d99448845094d1d8bbfff8338f7eaa2"
+        guard let urlString = URL(string: myUrl) else {
+            return
+        }
+        URLSession.shared.dataTask(with: URLRequest(url: urlString)) { data, response, error in
+            if let data = data {
+                if let weatherData = try? JSONDecoder().decode(CityNameSuggestionModel.self, from: data) {
+                    completion(true, weatherData)
+                } else {
+                    print("Invalid Response")
+                    completion(false, nil)
+                }
+            } else if let error = error {
+                print("HTTP Request Failed \(error)")
+                completion(false, nil)
+            }
+        }.resume()
+        
+    }
+    
 }

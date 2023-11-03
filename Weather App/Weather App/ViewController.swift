@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var locationManager: CLLocationManager?
     let weatherService = WeatherServices.shared
     var cityDataDataSource = [SavedCityModel]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -38,7 +38,6 @@ class ViewController: UIViewController {
         savedCityCollectionView.dataSource = self
         savedCityCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         reloadCityList()
-
     }
     
     func setDefaultVAlues() {
@@ -94,6 +93,7 @@ class ViewController: UIViewController {
     @IBAction func searchTapped(_ sender: Any) {
         
     }
+    
 }
 
 extension ViewController: UICollectionViewDelegate,
@@ -177,5 +177,43 @@ extension ViewController: ViewControllerDelegate {
            let destiNation = segue.destination as? SearchViewController {
             destiNation.delegate = self
         }
+    }
+}
+
+
+extension ViewController {
+    func getWeatherForSavedCities(cityList: [SavedCityModel]) {
+        var cityListWithData: [SavedCityModel] = []
+        cityList.forEach { city in
+            weatherService.getCurrentCityData(lat: city.lat, lon: city.lon) { success, dataFromServer in
+                if success,
+                   let data = dataFromServer {
+                    var temp: Double = data.main?.temp ?? 0
+                    DispatchQueue.main.async {
+                        cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp))
+                        
+                        if cityListWithData.count == cityList.count {
+                            self.matchCityNameandUpdateData(cityListWithData: cityListWithData)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func matchCityNameandUpdateData(cityListWithData: [SavedCityModel]) {
+        for i in 0..<cityDataDataSource.count {
+            for j in 0..<cityListWithData.count {
+                if cityDataDataSource[i].name == cityListWithData[j].name &&
+                    cityDataDataSource[i].lat == cityListWithData[j].lat &&
+                    cityDataDataSource[i].lon == cityListWithData[j].lon {
+                    cityDataDataSource[i].temp = cityListWithData[j].temp
+                    break  // If you found a match, exit the inner loop
+                }
+            }
+        }
+        
+        self.savedCityCollectionView.reloadData()
+
     }
 }
