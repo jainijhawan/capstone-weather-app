@@ -26,7 +26,8 @@ class ViewController: UIViewController {
     
     var locationManager: CLLocationManager?
     let weatherService = WeatherServices.shared
-    
+    var cityDataDataSource = [SavedCityModel]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -36,6 +37,8 @@ class ViewController: UIViewController {
         savedCityCollectionView.delegate = self
         savedCityCollectionView.dataSource = self
         savedCityCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
+        reloadCityList()
+
     }
     
     func setDefaultVAlues() {
@@ -88,21 +91,24 @@ class ViewController: UIViewController {
         savedCityCollectionView.reloadData()
     }
     
-    
+    @IBAction func searchTapped(_ sender: Any) {
+        
+    }
 }
 
 extension ViewController: UICollectionViewDelegate,
                             UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        5
+        cityDataDataSource.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:SavedCityCollectionViewCell.self), for: indexPath) as? SavedCityCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex)
+        let city = cityDataDataSource[indexPath.row]
+        cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
         return cell
     }
 }
@@ -151,6 +157,25 @@ extension ViewController {
                 self.backgroundAQIImageView.image = getAQIColorTextAndBG(aqi: Int(aqi)).image
             },
                               completion: nil)
+        }
+    }
+}
+
+protocol ViewControllerDelegate: AnyObject {
+    func reloadCityList()
+}
+
+extension ViewController: ViewControllerDelegate {
+    func reloadCityList() {
+        cityDataDataSource.removeAll()
+        cityDataDataSource = getSavedCities()
+        getWeatherForSavedCities(cityList: cityDataDataSource)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "gotoSearch",
+           let destiNation = segue.destination as? SearchViewController {
+            destiNation.delegate = self
         }
     }
 }
