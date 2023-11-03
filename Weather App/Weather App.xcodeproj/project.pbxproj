@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		578156572AE5BF670082CAA4 /* AQIDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578156562AE5BF670082CAA4 /* AQIDataModel.swift */; };
+		598328F02AF471B6007C415A /* CityNameSuggestionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598328EF2AF471B6007C415A /* CityNameSuggestionModel.swift */; };
 		86488E572AE6194200359965 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86488E562AE6194200359965 /* Extensions.swift */; };
 		D67F6A3E2AE5AE5E0003D50C /* CurrentWeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */; };
 		D67F6A412AE5AEA90003D50C /* WeatherServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67F6A402AE5AEA90003D50C /* WeatherServices.swift */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		578156562AE5BF670082CAA4 /* AQIDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AQIDataModel.swift; sourceTree = "<group>"; };
+		598328EF2AF471B6007C415A /* CityNameSuggestionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityNameSuggestionModel.swift; sourceTree = "<group>"; };
 		86488E562AE6194200359965 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherData.swift; sourceTree = "<group>"; };
 		D67F6A402AE5AEA90003D50C /* WeatherServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServices.swift; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			children = (
 				D67F6A3D2AE5AE5E0003D50C /* CurrentWeatherData.swift */,
 				578156562AE5BF670082CAA4 /* AQIDataModel.swift */,
+				598328EF2AF471B6007C415A /* CityNameSuggestionModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -172,6 +175,7 @@
 				D67F6A3E2AE5AE5E0003D50C /* CurrentWeatherData.swift in Sources */,
 				578156572AE5BF670082CAA4 /* AQIDataModel.swift in Sources */,
 				D67F6A412AE5AEA90003D50C /* WeatherServices.swift in Sources */,
+				598328F02AF471B6007C415A /* CityNameSuggestionModel.swift in Sources */,
 				DE972ACE2ACA053A00188639 /* ViewController.swift in Sources */,
 				DE972ACA2ACA053A00188639 /* AppDelegate.swift in Sources */,
 				DE7E8FD32AF3606900BAE0FB /* SavedCityCollectionViewCell.swift in Sources */,
