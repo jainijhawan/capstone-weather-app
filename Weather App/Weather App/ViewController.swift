@@ -10,6 +10,7 @@ import CoreLocation
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var allowLocationPermissionButton: UIButton!
     @IBOutlet weak var metricSegmentControl: UISegmentedControl!
     @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
@@ -32,12 +33,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         locationManager = CLLocationManager()
         locationManager?.delegate = self
-        locationManager?.requestWhenInUseAuthorization()
         setDefaultVAlues()
         savedCityCollectionView.delegate = self
         savedCityCollectionView.dataSource = self
         savedCityCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         reloadCityList()
+        allowLocationPermissionTapped(self)
     }
     
     func setDefaultVAlues() {
@@ -73,7 +74,7 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
     @IBAction func segmentControlTapped(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex != 1 {
             currentTempratureLabel.text = tempInCelcius(text: currentTempratureLabel.text)
@@ -94,10 +95,47 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func allowLocationPermissionTapped(_ sender: Any) {
+        // initialise a pop up for using later
+        let alertController = UIAlertController(title: "To make the app get weather data", message: "Please go to Settings and turn on the permissions", preferredStyle: .alert)
+        
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { (_) -> Void in
+            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            if UIApplication.shared.canOpenURL(settingsUrl) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { (success) in })
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(settingsAction)
+        
+        // check the permission status
+        switch(locationManager?.authorizationStatus) {
+        case .notDetermined:
+            allowLocationPermissionButton.isHidden = false
+            locationManager?.requestWhenInUseAuthorization()
+        case .authorizedAlways,
+                .authorizedWhenInUse:
+            print("Authorize.")
+            allowLocationPermissionButton.isHidden = true
+        case.restricted,
+                .denied:
+            // redirect the users to settings
+            allowLocationPermissionButton.isHidden = false
+            self.present(alertController, animated: true, completion: nil)
+        case .none:
+            break
+        @unknown default:
+            break
+        }
+    }
 }
 
 extension ViewController: UICollectionViewDelegate,
-                            UICollectionViewDataSource {
+                          UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         cityDataDataSource.count
@@ -119,11 +157,12 @@ extension ViewController: CLLocationManagerDelegate {
         case .notDetermined,
                 .restricted,
                 .denied:
-            break
+            allowLocationPermissionButton.isHidden = false
             
         case .authorizedAlways,
                 .authorizedWhenInUse,
                 .authorized:
+            allowLocationPermissionButton.isHidden = true
             guard let locValue = manager.location?.coordinate else { return }
             print("locations = \(locValue.latitude) \(locValue.longitude)")
             requestWeatherFor(lat: Double(locValue.latitude), lon: Double(locValue.longitude))
@@ -188,7 +227,7 @@ extension ViewController {
             weatherService.getCurrentCityData(lat: city.lat, lon: city.lon) { success, dataFromServer in
                 if success,
                    let data = dataFromServer {
-                    var temp: Double = data.main?.temp ?? 0
+                    let temp: Double = data.main?.temp ?? 0
                     DispatchQueue.main.async {
                         cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp))
                         
@@ -214,6 +253,6 @@ extension ViewController {
         }
         
         self.savedCityCollectionView.reloadData()
-
+        
     }
 }
