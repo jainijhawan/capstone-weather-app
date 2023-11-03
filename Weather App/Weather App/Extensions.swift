@@ -110,3 +110,48 @@ func tempInCelcius(text: String?) -> String {
     return ""
   }
 }
+
+// Harwinder
+func saveCityToDataBase(model: SavedCityModel) {
+    let userDefaults = UserDefaults.standard
+
+    if let savedCitiesData: Data = userDefaults.object(forKey: "savedCityList") as? Data {
+        
+        do {
+            let decoder = JSONDecoder()
+            var myData = try decoder.decode([SavedCityModel].self, from: savedCitiesData)
+            myData.append(model)
+            do {
+                let data = try JSONEncoder().encode(myData)
+                UserDefaults.standard.set(data, forKey: "savedCityList")
+            } catch {
+                // Fallback
+            }
+        } catch {
+            // Fallback
+        }
+        
+    } else {
+        do {
+            let data = try JSONEncoder().encode([model])
+            UserDefaults.standard.set(data, forKey: "savedCityList")
+        } catch {
+            // Fallback
+        }
+    }
+
+}
+
+func getSavedCities() -> [SavedCityModel] {
+    guard let data = UserDefaults.standard.data(forKey: "savedCityList") else {
+        return []
+    }
+    do {
+        let decoder = JSONDecoder()
+        let myData = try decoder.decode([SavedCityModel].self, from: data)
+        return myData
+    } catch {
+        // Fallback
+    }
+    return []
+}
