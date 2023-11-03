@@ -19,4 +19,3 @@ class SearchCityTableViewCell: UITableViewCell {
         cityName.text = cityNameText
     }
 }
-

@@ -12,26 +12,25 @@ class SavedCityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var metricLabel: UILabel!
     
-    func setupUI(segmentControlIndex: Int) {
+    func setupUI(segmentControlIndex: Int, cityName: String, temp: Double) {
         contentView.layer.borderColor = UIColor.white.cgColor
         contentView.layer.borderWidth = 2
         contentView.layer.cornerRadius = 8
-        tempratureLabel.text = "11"
-        
+        cityNameLabel.text = cityName
         if segmentControlIndex == 0 {
-            changeUIForCelcius()
+            changeUIForCelcius(temp: temp)
         } else {
-            changeUIForFar()
+            changeUIForFar(temp: temp)
         }
     }
     
-    func changeUIForCelcius() {
-        tempratureLabel.text = tempInCelcius(text: tempratureLabel.text)
+    func changeUIForCelcius(temp: Double) {
+        tempratureLabel.text = temp.getTempInCelcius()
         metricLabel.text = "°C"
     }
     
-    func changeUIForFar() {
-        tempratureLabel.text = tempInFahrenheit(text: tempratureLabel.text)
+    func changeUIForFar(temp: Double) {
+        tempratureLabel.text = tempInFahrenheit(text: temp.getTempInCelcius())
         metricLabel.text = "°F"
     }
 }

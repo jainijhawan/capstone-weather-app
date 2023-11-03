@@ -111,7 +111,6 @@ func tempInCelcius(text: String?) -> String {
   }
 }
 
-// Harwinder
 func saveCityToDataBase(model: SavedCityModel) {
     let userDefaults = UserDefaults.standard
 
