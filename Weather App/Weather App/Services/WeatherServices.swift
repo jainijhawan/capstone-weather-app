@@ -9,7 +9,7 @@ import Foundation // api.openweathermap.org/data/2.5/weather?q={city name}&appid
 
 class WeatherServices {
     static let shared = WeatherServices()
-    let APIKEY = "90b7863a4aa0bbbdd4627d683db1db78"
+    let APIKEY = "26f27d2f85c162f957c7478df0bcb6e0"
     
     private init() {
         
@@ -20,7 +20,7 @@ class WeatherServices {
     func getCurrentCityData(lat: Double,
                             lon: Double,
                             completion: @escaping (Bool, CurrentWeatherData?)->Void) {
-        let myURL = "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=\(APIKEY)"
+        let myURL = "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&appid=\(APIKEY)"
         guard let urlString = URL(string: myURL) else {
             return
         }
