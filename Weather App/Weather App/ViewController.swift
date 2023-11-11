@@ -186,7 +186,7 @@ extension ViewController {
     }
     
     func setupUIforAQI(data: AQIDataModel) {
-        guard let aqi = data.list.first?.main.aqi else { return }
+        guard let aqi = data.overallAqi else { return }
         aqiLabel.text = "AQI: \(aqi)"
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             UIView.transition(with: self.backgroundAQIImageView,

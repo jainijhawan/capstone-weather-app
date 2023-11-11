@@ -42,11 +42,14 @@ class WeatherServices {
     func getCurrentLocationAQI(lat: Double,
                                lon: Double,
                                completion: @escaping (Bool, AQIDataModel?)->Void) {
-           let myURL = "https://api.openweathermap.org/data/2.5/air_pollution?lat=\(lat)&lon=\(lon)&appid=\(APIKEY)"
+           let myURL = "https://api.api-ninjas.com/v1/airquality?lat=\(lat)&lon=\(lon)"
            guard let urlString = URL(string: myURL) else {
                return
            }
-           URLSession.shared.dataTask(with: URLRequest(url: urlString)) { data, response, error in
+        var request = URLRequest(url: urlString)
+        request.setValue("H4yl144npI8ZXwnYIpCMZQ==pEgri5E2wuMndHSO", forHTTPHeaderField: "X-Api-Key")
+        
+           URLSession.shared.dataTask(with: request) { data, response, error in
                if let data = data {
                    if let weatherData = try? JSONDecoder().decode(AQIDataModel.self, from: data) {
                        completion(true, weatherData)
