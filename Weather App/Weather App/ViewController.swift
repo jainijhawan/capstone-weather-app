@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
     
+    @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var backgroundAQIImageView: UIImageView!
     @IBOutlet weak var minimumTempLabel: UILabel!
     @IBOutlet weak var currentDateLabel: UILabel!
@@ -28,7 +29,8 @@ class ViewController: UIViewController {
     var locationManager: CLLocationManager?
     let weatherService = WeatherServices.shared
     var cityDataDataSource = [SavedCityModel]()
-    
+    var hourlyCellModels = [HourlyWeatherCollectionViewCellModel]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -36,7 +38,10 @@ class ViewController: UIViewController {
         setDefaultVAlues()
         savedCityCollectionView.delegate = self
         savedCityCollectionView.dataSource = self
+        hourlyCollectionView.delegate = self
+        hourlyCollectionView.dataSource = self
         savedCityCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
+        hourlyCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         reloadCityList()
         allowLocationPermissionTapped(self)
     }
@@ -89,6 +94,7 @@ class ViewController: UIViewController {
         }
         
         savedCityCollectionView.reloadData()
+        hourlyCollectionView.reloadData()
     }
     
     @IBAction func searchTapped(_ sender: Any) {
@@ -138,16 +144,35 @@ extension ViewController: UICollectionViewDelegate,
                           UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        cityDataDataSource.count
+        switch collectionView {
+        case savedCityCollectionView:
+            return cityDataDataSource.count
+        case hourlyCollectionView:
+            return hourlyCellModels.count
+        default:
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:SavedCityCollectionViewCell.self), for: indexPath) as? SavedCityCollectionViewCell else {
+        switch collectionView {
+        case hourlyCollectionView:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:HourlyWeatherCollectionViewCell.self), for: indexPath) as? HourlyWeatherCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            cell.setupUI(viewModel: hourlyCellModels[indexPath.row], segmentControlIndex: metricSegmentControl.selectedSegmentIndex)
+            return cell
+        case savedCityCollectionView:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing:SavedCityCollectionViewCell.self), for: indexPath) as? SavedCityCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let city = cityDataDataSource[indexPath.row]
+            cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
+            return cell
+        default:
             return UICollectionViewCell()
         }
-        let city = cityDataDataSource[indexPath.row]
-        cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
-        return cell
+ 
     }
 }
 
@@ -175,14 +200,57 @@ extension ViewController: CLLocationManagerDelegate {
 
 extension ViewController {
     func setupUI(data: CurrentWeatherData) {
-        currentTempratureLabel.animateWith(text: data.main?.temp?.getTempInCelcius() ?? "")
+        currentTempratureLabel.animateWith(text: data.current.temp.getTempInCelcius())
         currentDayLabel.animateWith(text: Date().dayOfWeek() ?? "")
         currentDateLabel.animateWith(text: Date().getCurrentDate())
         metricLabel.animateWith(text: "°C")
-        maximumTempLabel.animateWith(text: (data.main?.tempMax?.getTempInCelcius() ?? "") + "°C")
-        minimumTempLabel.animateWith(text: (data.main?.tempMin?.getTempInCelcius() ?? "") + "°C")
-        cityNameLabel.animateWith(text: data.name ?? "")
-        weatherConditionLabel.animateWith(text: data.weather?.first?.description?.capitalized ?? "")
+        maximumTempLabel.animateWith(text: (data.daily.first?.temp.max.getTempInCelcius() ?? "") + "°C")
+        minimumTempLabel.animateWith(text: (data.daily.first?.temp.min.getTempInCelcius() ?? "") + "°C")
+        getCityName(lat: data.lat, lon: data.lon) { name in
+            self.cityNameLabel.text = name
+        }
+        weatherConditionLabel.animateWith(text: data.current.weather.first?.weatherDescription.capitalized ?? "")
+       createHourlyCellModels(data: data)
+    }
+    
+    func getCityName(lat: Double, lon: Double,
+                     completion: @escaping ((_ data: String) -> Void)) {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: lat, longitude: lon)
+        
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if error == nil {
+                completion(placemarks?.first?.locality ?? "")
+            }
+        }
+    }
+    
+    func createHourlyCellModels(data: CurrentWeatherData) {
+      let dateFormatterPrint = DateFormatter()
+      dateFormatterPrint.dateFormat = "h a"
+      var models = [HourlyWeatherCollectionViewCellModel]()
+      for index in 0...24 {
+        let date = Date(timeIntervalSince1970: TimeInterval(data.hourly[index].dt))
+        let timeString = dateFormatterPrint.string(from: date)
+        let id = data.hourly[index].weather.first?.id
+        let temp = data.hourly[index].temp.getTempInCelcius()
+        
+        if timeString == "1 AM" {
+          models.append(HourlyWeatherCollectionViewCellModel(time: "",
+                                                             id: 0,
+                                                             temprature: "",
+                                                             index: index, 
+                                                             tempDouble: data.hourly[index].temp))
+        }
+        let model = HourlyWeatherCollectionViewCellModel(time: timeString,
+                                                         id: id!,
+                                                         temprature: temp + "°",
+                                                         index: index, 
+                                                         tempDouble: data.hourly[index].temp)
+        models.append(model)
+      }
+      hourlyCellModels = models
+      hourlyCollectionView.reloadData()
     }
     
     func setupUIforAQI(data: AQIDataModel) {
@@ -227,7 +295,7 @@ extension ViewController {
             weatherService.getCurrentCityData(lat: city.lat, lon: city.lon) { success, dataFromServer in
                 if success,
                    let data = dataFromServer {
-                    let temp: Double = data.main?.temp ?? 0
+                    let temp: Double = data.current.temp
                     DispatchQueue.main.async {
                         cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp))
                         
