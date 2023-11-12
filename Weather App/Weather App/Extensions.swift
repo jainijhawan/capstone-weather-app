@@ -211,3 +211,8 @@ func removeCityFromDatabase(model: SavedCityModel) {
         }
     }
 }
+
+typealias CityData = (city: String,
+                      country: String,
+                      lat: String,
+                      lon: String)
