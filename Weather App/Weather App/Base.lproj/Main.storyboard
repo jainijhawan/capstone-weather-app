@@ -162,19 +162,28 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AQI: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nuo-bl-WEK">
+                                                    <rect key="frame" x="151.33333333333334" y="97.666666666666671" width="43.666666666666657" height="25.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="Nuo-bl-WEK" secondAttribute="bottom" constant="5" id="3Za-Md-DGA"/>
                                             <constraint firstItem="VGm-fu-YMi" firstAttribute="leading" secondItem="g9N-Pk-9y8" secondAttribute="leading" constant="20" id="ANy-np-xIn"/>
                                             <constraint firstAttribute="trailing" secondItem="VGm-fu-YMi" secondAttribute="trailing" constant="20" id="B1G-wy-SCb"/>
                                             <constraint firstItem="IvL-fE-h2c" firstAttribute="leading" secondItem="g9N-Pk-9y8" secondAttribute="leading" constant="10" id="Ex8-xB-l5O"/>
                                             <constraint firstItem="N8b-c9-ilA" firstAttribute="leading" secondItem="IvL-fE-h2c" secondAttribute="trailing" constant="10" id="Fu2-qi-XM3"/>
+                                            <constraint firstAttribute="trailing" secondItem="Nuo-bl-WEK" secondAttribute="trailing" constant="5" id="IMj-nA-8vT"/>
                                             <constraint firstAttribute="bottom" secondItem="IvL-fE-h2c" secondAttribute="bottom" constant="20" id="WA9-Yx-zg8"/>
                                             <constraint firstItem="IvL-fE-h2c" firstAttribute="top" secondItem="VGm-fu-YMi" secondAttribute="bottom" constant="10" id="YbC-Pa-gKd"/>
                                             <constraint firstItem="N8b-c9-ilA" firstAttribute="centerY" secondItem="IvL-fE-h2c" secondAttribute="centerY" id="op4-zT-gY0"/>
                                             <constraint firstItem="VGm-fu-YMi" firstAttribute="top" secondItem="g9N-Pk-9y8" secondAttribute="top" constant="20" id="qrq-On-tUh"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="aqiLabel" destination="Nuo-bl-WEK" id="rg0-nH-cEJ"/>
                                             <outlet property="cityNameLabel" destination="VGm-fu-YMi" id="0O8-cH-gYX"/>
                                             <outlet property="metricLabel" destination="N8b-c9-ilA" id="lN1-3I-35I"/>
                                             <outlet property="tempratureLabel" destination="IvL-fE-h2c" id="4Av-5W-B0U"/>
@@ -438,17 +447,17 @@
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCityTableViewCell" id="3QX-eB-QgC" customClass="SearchCityTableViewCell" customModule="Weather_App" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="353" height="65.666664123535156"/>
+                                        <rect key="frame" x="0.0" y="50" width="353" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3QX-eB-QgC" id="GpC-5g-Alm">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="65.666664123535156"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HyB-EE-WYC">
-                                                    <rect key="frame" x="0.0" y="4.9999999999999964" width="353" height="55.666666666666657"/>
+                                                    <rect key="frame" x="0.0" y="5" width="353" height="55"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUx-k9-Wty">
-                                                            <rect key="frame" x="14.999999999999996" y="15.000000000000002" width="51.666666666666657" height="25.666666666666671"/>
+                                                            <rect key="frame" x="14.999999999999996" y="15" width="51.666666666666657" height="25"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
