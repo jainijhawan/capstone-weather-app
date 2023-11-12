@@ -361,6 +361,12 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favourites Cities" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXd-SD-MfD">
+                                <rect key="frame" x="8" y="424.33333333333331" width="150.33333333333334" height="25.333333333333314"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.70980392156862748" green="0.71764705882352942" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -371,6 +377,7 @@
                             <constraint firstItem="hKT-Cy-5NE" firstAttribute="top" secondItem="r8o-iz-VoC" secondAttribute="bottom" constant="5" id="6gE-sh-eBi"/>
                             <constraint firstItem="hKT-Cy-5NE" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="6pB-Ho-TJA"/>
                             <constraint firstItem="bzp-bo-BtP" firstAttribute="centerX" secondItem="mEZ-iV-PZZ" secondAttribute="centerX" id="7ct-m1-JPr"/>
+                            <constraint firstItem="Hp4-jf-VCl" firstAttribute="top" secondItem="SXd-SD-MfD" secondAttribute="bottom" constant="8" id="9Ox-RV-pFO"/>
                             <constraint firstItem="xvv-9F-92z" firstAttribute="centerX" secondItem="tGu-cH-YuC" secondAttribute="centerX" id="A2g-EP-fLA"/>
                             <constraint firstItem="yz9-M9-dm6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CLU-vI-bfQ"/>
                             <constraint firstItem="RoK-bJ-bCD" firstAttribute="centerY" secondItem="14K-XP-QHf" secondAttribute="centerY" id="Ctm-dE-Jbe"/>
@@ -401,6 +408,7 @@
                             <constraint firstItem="0tI-XX-YeB" firstAttribute="leading" secondItem="40T-4Q-gKK" secondAttribute="trailing" constant="10" id="n5f-9B-IpG"/>
                             <constraint firstItem="Dbq-Vx-BVe" firstAttribute="top" secondItem="0tI-XX-YeB" secondAttribute="bottom" constant="20" id="o0Q-vb-uAv"/>
                             <constraint firstAttribute="bottom" secondItem="iuc-Xq-fRk" secondAttribute="bottom" id="o40-on-VST"/>
+                            <constraint firstItem="SXd-SD-MfD" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="qHy-oZ-OT8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iuc-Xq-fRk" secondAttribute="trailing" id="wXE-HQ-o6V"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Hp4-jf-VCl" secondAttribute="trailing" id="zUC-wR-jkb"/>
                         </constraints>
@@ -447,17 +455,17 @@
                                 <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchCityTableViewCell" id="3QX-eB-QgC" customClass="SearchCityTableViewCell" customModule="Weather_App" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="353" height="65"/>
+                                        <rect key="frame" x="0.0" y="50" width="353" height="65.666664123535156"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3QX-eB-QgC" id="GpC-5g-Alm">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="65"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="65.666664123535156"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HyB-EE-WYC">
-                                                    <rect key="frame" x="0.0" y="5" width="353" height="55"/>
+                                                    <rect key="frame" x="0.0" y="4.9999999999999964" width="353" height="55.666666666666657"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vUx-k9-Wty">
-                                                            <rect key="frame" x="14.999999999999996" y="15" width="51.666666666666657" height="25"/>
+                                                            <rect key="frame" x="14.999999999999996" y="15.000000000000002" width="51.666666666666657" height="25.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
