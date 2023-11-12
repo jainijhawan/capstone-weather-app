@@ -183,3 +183,31 @@ func getPNGFromCurrentWeatherID(id: Int) -> UIImage? {
     }
     return UIImage(named: name)
   }
+
+func removeCityFromDatabase(model: SavedCityModel) {
+    let userDefaults = UserDefaults.standard
+
+    if let savedCitiesData: Data = userDefaults.object(forKey: "savedCityList") as? Data {
+        do {
+            let decoder = JSONDecoder()
+            var myData = try decoder.decode([SavedCityModel].self, from: savedCitiesData)
+            
+            // Find the index of the city to remove based on latitude and longitude
+            if let index = myData.firstIndex(where: { $0.lat == model.lat && $0.lon == model.lon }) {
+                myData.remove(at: index)
+                
+                // Update UserDefaults with the modified data
+                do {
+                    let data = try JSONEncoder().encode(myData)
+                    UserDefaults.standard.set(data, forKey: "savedCityList")
+                } catch {
+                    // Handle encoding error
+                    print("Error encoding data: \(error.localizedDescription)")
+                }
+            }
+        } catch {
+            // Handle decoding error
+            print("Error decoding data: \(error.localizedDescription)")
+        }
+    }
+}

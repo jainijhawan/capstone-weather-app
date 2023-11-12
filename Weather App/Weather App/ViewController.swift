@@ -358,3 +358,18 @@ extension ViewController {
         }
     }
 }
+
+extension ViewController {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedCity = cityDataDataSource[indexPath.row]
+        
+        let alert = UIAlertController(title: "Remove \(selectedCity.name) from favourites", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.cityDataDataSource.remove(at: indexPath.row)
+            removeCityFromDatabase(model: selectedCity)
+            self.savedCityCollectionView.reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+}
