@@ -1,0 +1,16 @@
+PODS:
+  - Magnetic (3.3.1)
+
+DEPENDENCIES:
+  - Magnetic
+
+SPEC REPOS:
+  trunk:
+    - Magnetic
+
+SPEC CHECKSUMS:
+  Magnetic: 71bdf9e4a396626dcee498e796f8dc09446fbd86
+
+PODFILE CHECKSUM: b3494a00d94c43c6412006b3f9fd589217bdb0f2
+
+COCOAPODS: 1.14.2

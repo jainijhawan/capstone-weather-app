@@ -98,7 +98,10 @@ class ViewController: UIViewController {
     }
     
     @IBAction func searchTapped(_ sender: Any) {
-        
+        guard let vc = storyboard?.instantiateViewController(withIdentifier: "SearchViewController") as? SearchViewController else { return }
+        vc.modalPresentationStyle = .fullScreen
+        vc .delegate = self
+        self.present(vc, animated: true)
     }
     
     @IBAction func allowLocationPermissionTapped(_ sender: Any) {
