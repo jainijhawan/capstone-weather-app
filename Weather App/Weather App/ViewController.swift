@@ -168,6 +168,7 @@ extension ViewController: UICollectionViewDelegate,
             }
             let city = cityDataDataSource[indexPath.row]
             cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
+            cell.setupAQI(aqi: city.aqi)
             return cell
         default:
             return UICollectionViewCell()
@@ -322,5 +323,38 @@ extension ViewController {
         
         self.savedCityCollectionView.reloadData()
         
+        getAQIForAllCities(cityListWithData: cityListWithData)
+    }
+    
+    func getAQIForAllCities(cityListWithData: [SavedCityModel]) {
+        var temp = [SavedCityModel]()
+        for city in cityListWithData {
+            weatherService.getCurrentLocationAQI(lat: city.lat, lon: city.lon) { isSuccess, AQIData in
+                if isSuccess {
+                    DispatchQueue.main.async {
+                        guard let AQIData = AQIData else { return }
+                        var tempCity = city
+                        tempCity.aqi = AQIData.overallAqi ?? 0
+                        temp.append(tempCity)
+                        
+                        if temp.count == self.cityDataDataSource.count {
+                            for i in 0..<self.cityDataDataSource.count {
+                                for j in 0..<cityListWithData.count {
+                                    if self.cityDataDataSource[i].name == temp[j].name &&
+                                        self.cityDataDataSource[i].lat == temp[j].lat &&
+                                        self.cityDataDataSource[i].lon == temp[j].lon {
+                                        self.cityDataDataSource[i].temp = temp[j].temp
+                                        self.cityDataDataSource[i].aqi = temp[j].aqi
+                                        break  // If you found a match, exit the inner loop
+                                    }
+                                }
+                            }
+
+                        }
+                        self.savedCityCollectionView.reloadData()
+                    }
+                }
+            }
+        }
     }
 }
