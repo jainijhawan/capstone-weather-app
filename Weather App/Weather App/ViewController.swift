@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
     
+    @IBOutlet weak var aqiCommentLabel: UILabel!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var backgroundAQIImageView: UIImageView!
     @IBOutlet weak var minimumTempLabel: UILabel!
@@ -75,6 +76,7 @@ class ViewController: UIViewController {
                 DispatchQueue.main.async {
                     guard let AQIData = AQIData else { return }
                     self.setupUIforAQI(data: AQIData)
+                    self.setupAQIComment(aqi: AQIData.overallAqi ?? 0)
                 }
             }
         }
@@ -265,7 +267,7 @@ extension ViewController {
                               duration: 4,
                               options: .transitionCrossDissolve,
                               animations: {
-                self.backgroundAQIImageView.image = getAQIColorTextAndBG(aqi: Int(aqi)).image
+                self.backgroundAQIImageView.image = getAQIBG(aqi: Int(aqi))
             },
                               completion: nil)
         }
@@ -374,5 +376,12 @@ extension ViewController {
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension ViewController {
+    func setupAQIComment(aqi: Int) {
+        aqiCommentLabel.animateWith(text: getAQIColorAndText(aqi: aqi).comment)
+        aqiCommentLabel.textColor = getAQIColorAndText(aqi: aqi).color
     }
 }
