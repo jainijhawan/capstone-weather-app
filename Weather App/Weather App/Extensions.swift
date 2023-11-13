@@ -39,44 +39,25 @@ extension UILabel {
     }
 }
 
-func getAQIColorTextAndBG(aqi: Int) -> (color: UIColor, comment:String, image: UIImage?) {
-  var rgb: (CGFloat, CGFloat, CGFloat) = (0, 0, 0)
-  var comment = ""
+func getAQIBG(aqi: Int) -> UIImage? {
     var bg: UIImage? = UIImage()
   switch aqi {
   case 0...50:
-    rgb = (1, 152, 102)
-    comment = "It's Good !"
     bg = UIImage(named: "bg1")
   case 51...100:
-    rgb = (255, 215, 0)
-    comment = "It's Moderate !"
       bg = UIImage(named: "bg1")
   case 101...150:
-    rgb = (255, 153, 51)
-    comment = "It's Unhealthy !"
       bg = UIImage(named: "bg2")
   case 151...200:
-    rgb = (247, 0, 1)
-    comment = "Still Unhealthy !"
       bg = UIImage(named: "bg3")
   case 201...300:
-    rgb = (102, 0, 153)
-    comment = "Very Unhealthy !"
       bg = UIImage(named: "bg4")
   case 300...999:
-    rgb = (126, 0, 35)
-    comment = "It's Hazardous !"
       bg = UIImage(named: "bg5")
   default:
-    rgb = (0, 0, 0)
+    bg = nil
   }
-  return (UIColor(red: rgb.0/255,
-                  green: rgb.1/255,
-                  blue: rgb.2/255,
-                  alpha: 1.0),
-          comment,
-          bg)
+  return bg
 }
 
 func calculateCelsius(fahrenheit: Double) -> Double {
@@ -216,3 +197,31 @@ typealias CityData = (city: String,
                       country: String,
                       lat: String,
                       lon: String)
+
+func getAQIColorAndText(aqi: Int) -> (color: UIColor, comment: String) {
+  var rgb: (CGFloat, CGFloat, CGFloat) = (0, 0, 0)
+  var comment = ""
+  switch aqi {
+  case 0...50:
+    rgb = (1, 152, 102)
+    comment = "It's Good !"
+  case 51...100:
+    rgb = (255, 215, 0)
+    comment = "It's Moderate !"
+  case 101...150:
+    rgb = (255, 153, 51)
+    comment = "It's Unhealthy !"
+  case 151...200:
+    rgb = (247, 0, 1)
+    comment = "Still Unhealthy !"
+  case 201...300:
+    rgb = (102, 0, 153)
+    comment = "Very Unhealthy !"
+  case 300...999:
+    rgb = (126, 0, 35)
+    comment = "It's Hazardous !"
+  default:
+    rgb = (0, 0, 0)
+  }
+  return (color: UIColor(red: rgb.0/255, green: rgb.1/255, blue: rgb.2/255, alpha: 1.0), comment: comment)
+}
