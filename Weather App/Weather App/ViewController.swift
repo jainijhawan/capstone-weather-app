@@ -460,4 +460,23 @@ extension ViewController: UIActionSheetDelegate {
         present(actionSheetController, animated: true, completion: nil)
     }
     
+    func removeCity(selectedCity: SavedCityModel, indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Remove \(selectedCity.name) from favourites", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.cityDataDataSource.remove(at: indexPath.row)
+            removeCityFromDatabase(model: selectedCity)
+            self.savedCityCollectionView.reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func openColorPicker(selectedCity: SavedCityModel, indexPath: IndexPath, cityTag: String) {
+        self.selectedCity = selectedCity
+        self.cityTag = cityTag
+        let picker = UIColorPickerViewController()
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
+    }
+    
 }
