@@ -33,6 +33,8 @@ class ViewController: UIViewController {
     let weatherService = WeatherServices.shared
     var cityDataDataSource = [SavedCityModel]()
     var hourlyCellModels = [HourlyWeatherCollectionViewCellModel]()
+    var selectedCity: SavedCityModel?
+    var cityTag: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -430,4 +432,32 @@ extension ViewController {
         sunriseTimeLabel.animateWith(text: sunriseString)
         sunsetTimeLabel.animateWith(text: sunsetString)
     }
+}
+
+extension ViewController: UIActionSheetDelegate {
+    func cityTapped(city: SavedCityModel, indexPath: IndexPath) {
+        self.selectedCity = nil
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cityName = city.name.prefix(while: { $0 != "," })
+        let firstAction: UIAlertAction = UIAlertAction(title: "Add Custom Label to \(cityName)", style: .default) { action -> Void in
+            self.showInputAlert(city: String(cityName)) { cityTag in
+                guard let cityTag = cityTag else {
+                    self.cityTag = nil
+                    self.selectedCity = nil
+                    return
+                }
+                self.openColorPicker(selectedCity: city, indexPath: indexPath, cityTag: cityTag)
+            }
+        }
+        let secondAction: UIAlertAction = UIAlertAction(title: "Remove \(cityName) from Favourites", style: .default) { action -> Void in
+            self.removeCity(selectedCity: city, indexPath: indexPath)
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        actionSheetController.addAction(firstAction)
+        actionSheetController.addAction(secondAction)
+        actionSheetController.addAction(cancelAction)
+        actionSheetController.popoverPresentationController?.sourceView = self.view
+        present(actionSheetController, animated: true, completion: nil)
+    }
+    
 }
