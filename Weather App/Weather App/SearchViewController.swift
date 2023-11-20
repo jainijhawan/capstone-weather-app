@@ -15,7 +15,7 @@ class SearchViewController: UIViewController {
     @IBOutlet weak var magneticView: MagneticView!
     @IBOutlet weak var cityNameTableview: UITableView!
     
-    var cityNameDataSource: [(name: String, lat:Double, lon: Double)] = []
+    var cityNameDataSource: [(name: String, lat:Double, lon: Double, tagColor: String, tagText: String)] = []
     weak var delegate: ViewControllerDelegate?
     
     
@@ -35,6 +35,7 @@ class SearchViewController: UIViewController {
                                   (city: "Kolkata", country: "India", lat: "22.5411", lon: "88.3378"),
                                   (city: "Chennai", country: "India", lat: "13.0825", lon: "80.2750"),
                                   (city: "Gurgaon", country: "India", lat: "28.4500", lon: "77.0200")]
+    var debounce_timer:Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +60,9 @@ class SearchViewController: UIViewController {
         let scaleAction = SKAction.scale(to: 0, duration: 0.5)
         node.run(scaleAction)
       }
+        UIView.animate(withDuration: 0.5) {
+            self.magneticView.alpha = 0
+        }
     }
     @IBAction func backDidTap(_ sender: Any) {
         dismiss(animated: true)
@@ -83,6 +87,21 @@ extension SearchViewController: UITableViewDelegate,
 
 extension SearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        performSearch(searchBar: searchBar)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        hideAllNodes()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        debounce_timer?.invalidate()
+        debounce_timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false) { _ in
+            self.performSearch(searchBar: searchBar)
+        }
+    }
+    
+    func performSearch(searchBar: UISearchBar) {
         cityNameDataSource.removeAll()
         guard let searchText = searchBar.text else { return }
         WeatherServices.shared.getCityNames(searchText: searchText) { success, cityNameModel in
@@ -90,7 +109,11 @@ extension SearchViewController: UISearchBarDelegate {
                let cityNameModel {
                 self.cityNameDataSource = cityNameModel.results?.map({ result in
                     let name = "\(result.city ?? ""), \(result.country ?? "")"
-                    return (name: name, lat:result.lat ?? 0, lon: result.lon ?? 0)
+                    return (name: name,
+                            lat:result.lat ?? 0,
+                            lon: result.lon ?? 0,
+                            tagColor: UIColor.clear.toHex ?? "",
+                            tagText: "")
                 }) ?? []
                 
                 DispatchQueue.main.async {
@@ -98,10 +121,6 @@ extension SearchViewController: UISearchBarDelegate {
                 }
             }
         }
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        hideAllNodes()
     }
 }
 
@@ -113,7 +132,7 @@ extension SearchViewController {
         let selectedCity = cityNameDataSource[indexPath.row]
         let alert = UIAlertController(title: "Add \(selectedCity.name) to favourites", message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            saveCityToDataBase(model: SavedCityModel(name: selectedCity.name, lat: selectedCity.lat, lon: selectedCity.lon, temp: 0))
+            saveCityToDataBase(model: SavedCityModel(name: selectedCity.name, lat: selectedCity.lat, lon: selectedCity.lon, temp: 0, tagColor: selectedCity.tagColor, tagText: selectedCity.tagText))
             self.dismiss(animated: true) {
                 self.delegate?.reloadCityList()
             }
@@ -133,7 +152,9 @@ extension SearchViewController: MagneticDelegate {
             saveCityToDataBase(model: SavedCityModel(name: selectedCity.city,
                                                      lat: Double(selectedCity.lat) ?? 0,
                                                      lon: Double(selectedCity.lon) ?? 0,
-                                                     temp: 0))
+                                                     temp: 0,
+                                                     tagColor: UIColor.clear.toHex ?? "NNNNNN00",
+                                                     tagText: ""))
             self.dismiss(animated: true) {
                 self.delegate?.reloadCityList()
             }

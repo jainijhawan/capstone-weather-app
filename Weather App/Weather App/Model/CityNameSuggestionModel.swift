@@ -110,4 +110,6 @@ struct SavedCityModel: Codable {
     var lon: Double
     var temp: Double
     var aqi: Int = 0
+    var tagColor: String
+    var tagText: String
 }
