@@ -5,7 +5,7 @@
 //  Created by Nevil james on 2023-11-02.
 //
 
-import Foundation
+import UIKit
 
 // MARK: - CityNameSuggestionModel
 struct CityNameSuggestionModel: Codable {

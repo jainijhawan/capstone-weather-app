@@ -12,16 +12,28 @@ class SavedCityCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var metricLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
-
-    func setupUI(segmentControlIndex: Int, cityName: String, temp: Double) {
+    @IBOutlet weak var tagLabel: UILabel!
+    @IBOutlet weak var tagView: UIView!
+    
+    func setupUI(segmentControlIndex: Int, cityName: String, temp: Double, tagColor: UIColor, tagText: String) {
         contentView.layer.borderColor = UIColor.white.cgColor
         contentView.layer.borderWidth = 2
         contentView.layer.cornerRadius = 8
+        tagView.layer.cornerRadius = 4
         cityNameLabel.text = cityName
         if segmentControlIndex == 0 {
             changeUIForCelcius(temp: temp)
         } else {
             changeUIForFar(temp: temp)
+        }
+        
+        if tagColor == .clear {
+            tagView.isHidden = true
+            tagLabel.text = ""
+        } else {
+            tagView.isHidden = false
+            tagLabel.text = tagText
+            tagView.backgroundColor = tagColor.withAlphaComponent(0.4)
         }
     }
     

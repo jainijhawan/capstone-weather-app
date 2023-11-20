@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import Combine
 
 class ViewController: UIViewController {
     
@@ -15,9 +16,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
+    
     @IBOutlet weak var sunsetTimeLabel: UILabel!
     @IBOutlet weak var sunriseTimeLabel: UILabel!
-    
     @IBOutlet weak var aqiCommentLabel: UILabel!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var backgroundAQIImageView: UIImageView!
@@ -35,7 +36,7 @@ class ViewController: UIViewController {
     var hourlyCellModels = [HourlyWeatherCollectionViewCellModel]()
     var selectedCity: SavedCityModel?
     var cityTag: String?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -49,6 +50,9 @@ class ViewController: UIViewController {
         hourlyCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         reloadCityList()
         allowLocationPermissionTapped(self)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
+        savedCityCollectionView.addGestureRecognizer(longPressGesture)
+        savedCityCollectionView.reloadData()
     }
     
     func setDefaultVAlues() {
@@ -176,7 +180,7 @@ extension ViewController: UICollectionViewDelegate,
                 return UICollectionViewCell()
             }
             let city = cityDataDataSource[indexPath.row]
-            cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
+            cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp, tagColor: UIColor.init(hex: city.tagColor) ?? .clear, tagText: city.tagText)
             cell.setupAQI(aqi: city.aqi)
             return cell
         default:
@@ -220,7 +224,8 @@ extension ViewController {
             self.cityNameLabel.text = name
         }
         weatherConditionLabel.animateWith(text: data.current.weather.first?.weatherDescription.capitalized ?? "")
-       createHourlyCellModels(data: data)
+        createHourlyCellModels(data: data)
+        setupSunRiseAndSunSetTime(data: data)
     }
     
     func getCityName(lat: Double, lon: Double,
@@ -307,7 +312,7 @@ extension ViewController {
                    let data = dataFromServer {
                     let temp: Double = data.current.temp
                     DispatchQueue.main.async {
-                        cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp))
+                        cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp, tagColor: city.tagColor, tagText: city.tagText))
                         
                         if cityListWithData.count == cityList.count {
                             self.matchCityNameandUpdateData(cityListWithData: cityListWithData)
@@ -370,16 +375,7 @@ extension ViewController {
 
 extension ViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCity = cityDataDataSource[indexPath.row]
-        
-        let alert = UIAlertController(title: "Remove \(selectedCity.name) from favourites", message: "", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            self.cityDataDataSource.remove(at: indexPath.row)
-            removeCityFromDatabase(model: selectedCity)
-            self.savedCityCollectionView.reloadData()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        cityTapped(city: cityDataDataSource[indexPath.row], indexPath: indexPath)
     }
 }
 
@@ -416,7 +412,7 @@ extension ViewController {
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("Changing the cell order, moving: \(sourceIndexPath.row) to \(destinationIndexPath.row)")
     }
-} 
+}
 
 extension ViewController {
     func setupSunRiseAndSunSetTime(data: CurrentWeatherData) {
@@ -480,7 +476,6 @@ extension ViewController: UIActionSheetDelegate {
     }
     
 }
-
 
 extension ViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {

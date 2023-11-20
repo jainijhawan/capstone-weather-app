@@ -214,7 +214,6 @@ func saveColorToDatabaseFor(city: SavedCityModel, colorHex: String, cityTag: Str
     }
 }
 
-
 typealias CityData = (city: String,
                       country: String,
                       lat: String,
@@ -315,4 +314,3 @@ extension UIColor {
     }
     
 }
-
