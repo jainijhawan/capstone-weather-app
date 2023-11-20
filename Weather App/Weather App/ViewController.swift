@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import Combine
 
 class ViewController: UIViewController {
     
@@ -15,9 +16,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
+    
     @IBOutlet weak var sunsetTimeLabel: UILabel!
     @IBOutlet weak var sunriseTimeLabel: UILabel!
-    
     @IBOutlet weak var aqiCommentLabel: UILabel!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
     @IBOutlet weak var backgroundAQIImageView: UIImageView!
@@ -33,7 +34,9 @@ class ViewController: UIViewController {
     let weatherService = WeatherServices.shared
     var cityDataDataSource = [SavedCityModel]()
     var hourlyCellModels = [HourlyWeatherCollectionViewCellModel]()
-
+    var selectedCity: SavedCityModel?
+    var cityTag: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager = CLLocationManager()
@@ -47,6 +50,9 @@ class ViewController: UIViewController {
         hourlyCollectionView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         reloadCityList()
         allowLocationPermissionTapped(self)
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongGesture(gesture:)))
+        savedCityCollectionView.addGestureRecognizer(longPressGesture)
+        savedCityCollectionView.reloadData()
     }
     
     func setDefaultVAlues() {
@@ -174,7 +180,7 @@ extension ViewController: UICollectionViewDelegate,
                 return UICollectionViewCell()
             }
             let city = cityDataDataSource[indexPath.row]
-            cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp)
+            cell.setupUI(segmentControlIndex: metricSegmentControl.selectedSegmentIndex, cityName: city.name, temp: city.temp, tagColor: UIColor.init(hex: city.tagColor) ?? .clear, tagText: city.tagText)
             cell.setupAQI(aqi: city.aqi)
             return cell
         default:
@@ -218,7 +224,8 @@ extension ViewController {
             self.cityNameLabel.text = name
         }
         weatherConditionLabel.animateWith(text: data.current.weather.first?.weatherDescription.capitalized ?? "")
-       createHourlyCellModels(data: data)
+        createHourlyCellModels(data: data)
+        setupSunRiseAndSunSetTime(data: data)
     }
     
     func getCityName(lat: Double, lon: Double,
@@ -305,7 +312,7 @@ extension ViewController {
                    let data = dataFromServer {
                     let temp: Double = data.current.temp
                     DispatchQueue.main.async {
-                        cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp))
+                        cityListWithData.append(SavedCityModel(name: city.name, lat: city.lat, lon: city.lon, temp: temp, tagColor: city.tagColor, tagText: city.tagText))
                         
                         if cityListWithData.count == cityList.count {
                             self.matchCityNameandUpdateData(cityListWithData: cityListWithData)
@@ -368,16 +375,7 @@ extension ViewController {
 
 extension ViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedCity = cityDataDataSource[indexPath.row]
-        
-        let alert = UIAlertController(title: "Remove \(selectedCity.name) from favourites", message: "", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            self.cityDataDataSource.remove(at: indexPath.row)
-            removeCityFromDatabase(model: selectedCity)
-            self.savedCityCollectionView.reloadData()
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+        cityTapped(city: cityDataDataSource[indexPath.row], indexPath: indexPath)
     }
 }
 
@@ -414,7 +412,7 @@ extension ViewController {
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("Changing the cell order, moving: \(sourceIndexPath.row) to \(destinationIndexPath.row)")
     }
-} 
+}
 
 extension ViewController {
     func setupSunRiseAndSunSetTime(data: CurrentWeatherData) {
@@ -429,5 +427,87 @@ extension ViewController {
 
         sunriseTimeLabel.animateWith(text: sunriseString)
         sunsetTimeLabel.animateWith(text: sunsetString)
+    }
+}
+
+extension ViewController: UIActionSheetDelegate {
+    func cityTapped(city: SavedCityModel, indexPath: IndexPath) {
+        self.selectedCity = nil
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cityName = city.name.prefix(while: { $0 != "," })
+        let firstAction: UIAlertAction = UIAlertAction(title: "Add Custom Label to \(cityName)", style: .default) { action -> Void in
+            self.showInputAlert(city: String(cityName)) { cityTag in
+                guard let cityTag = cityTag else {
+                    self.cityTag = nil
+                    self.selectedCity = nil
+                    return
+                }
+                self.openColorPicker(selectedCity: city, indexPath: indexPath, cityTag: cityTag)
+            }
+        }
+        let secondAction: UIAlertAction = UIAlertAction(title: "Remove \(cityName) from Favourites", style: .default) { action -> Void in
+            self.removeCity(selectedCity: city, indexPath: indexPath)
+        }
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        actionSheetController.addAction(firstAction)
+        actionSheetController.addAction(secondAction)
+        actionSheetController.addAction(cancelAction)
+        actionSheetController.popoverPresentationController?.sourceView = self.view
+        present(actionSheetController, animated: true, completion: nil)
+    }
+    
+    func removeCity(selectedCity: SavedCityModel, indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Remove \(selectedCity.name) from favourites", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.cityDataDataSource.remove(at: indexPath.row)
+            removeCityFromDatabase(model: selectedCity)
+            self.savedCityCollectionView.reloadData()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+        self.present(alert, animated: true)
+    }
+    
+    func openColorPicker(selectedCity: SavedCityModel, indexPath: IndexPath, cityTag: String) {
+        self.selectedCity = selectedCity
+        self.cityTag = cityTag
+        let picker = UIColorPickerViewController()
+        picker.delegate = self
+        self.present(picker, animated: true, completion: nil)
+    }
+    
+}
+
+extension ViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        guard let selectedCity = self.selectedCity,
+        let cityTag = cityTag else { return }
+        saveColorToDatabaseFor(city: selectedCity, colorHex: viewController.selectedColor.toHex ?? "", cityTag: cityTag) {
+            DispatchQueue.main.async  {
+                self.selectedCity = nil
+                self.cityTag = nil
+                self.reloadCityList()
+            }
+        }
+    }
+        
+    func showInputAlert(city: String, completion: @escaping (String?) -> Void) {
+        let alertController = UIAlertController(title: "Enter Tag", message: "Please enter a tag for \(city)", preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Custom Tag"
+            textField.autocapitalizationType = .words
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            completion(nil)
+        }
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            if let cityNameTag = alertController.textFields?.first?.text {
+                completion(cityNameTag)
+            } else {
+                completion(nil)
+            }
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        present(alertController, animated: true, completion: nil)
     }
 }

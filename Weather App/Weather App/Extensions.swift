@@ -193,6 +193,27 @@ func removeCityFromDatabase(model: SavedCityModel) {
     }
 }
 
+func saveColorToDatabaseFor(city: SavedCityModel, colorHex: String, cityTag: String, completion: () -> Void) {
+    var savedCities = getSavedCities()
+    
+    // Find the city in the array based on latitude and longitude
+    if let index = savedCities.firstIndex(where: { $0.lat == city.lat && $0.lon == city.lon }) {
+        // Update the tagColor for the specific city
+        savedCities[index].tagColor = colorHex
+        savedCities[index].tagText = cityTag
+
+        // Save the updated cities data to UserDefaults
+        do {
+            let data = try JSONEncoder().encode(savedCities)
+            UserDefaults.standard.set(data, forKey: "savedCityList")
+            completion() // Call completion after the update
+        } catch {
+            // Handle encoding error
+            print("Error encoding data: \(error.localizedDescription)")
+        }
+    }
+}
+
 typealias CityData = (city: String,
                       country: String,
                       lat: String,
