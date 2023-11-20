@@ -385,3 +385,31 @@ extension ViewController {
         aqiCommentLabel.textColor = getAQIColorAndText(aqi: aqi).color
     }
 }
+
+extension ViewController {
+    
+    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    @objc func handleLongGesture(gesture: UILongPressGestureRecognizer) {
+        guard let collectionView = savedCityCollectionView else { return }
+        switch(gesture.state) {
+        case .began:
+            guard let selectedIndexPath = collectionView.indexPathForItem(at: gesture.location(in: collectionView)) else {
+                break
+            }
+            collectionView.beginInteractiveMovementForItem(at: selectedIndexPath)
+        case .changed:
+            collectionView.updateInteractiveMovementTargetPosition(gesture.location(in: gesture.view!))
+        case .ended:
+            collectionView.endInteractiveMovement()
+        default:
+            collectionView.cancelInteractiveMovement()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        print("Changing the cell order, moving: \(sourceIndexPath.row) to \(destinationIndexPath.row)")
+    }
+} 
