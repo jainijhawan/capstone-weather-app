@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var savedCityCollectionView: UICollectionView!
     @IBOutlet weak var weatherConditionLabel: UILabel!
     @IBOutlet weak var aqiLabel: UILabel!
+    @IBOutlet weak var sunsetTimeLabel: UILabel!
+    @IBOutlet weak var sunriseTimeLabel: UILabel!
     
     @IBOutlet weak var aqiCommentLabel: UILabel!
     @IBOutlet weak var hourlyCollectionView: UICollectionView!
@@ -413,3 +415,19 @@ extension ViewController {
         print("Changing the cell order, moving: \(sourceIndexPath.row) to \(destinationIndexPath.row)")
     }
 } 
+
+extension ViewController {
+    func setupSunRiseAndSunSetTime(data: CurrentWeatherData) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        
+        let sunriseDate = Date(timeIntervalSince1970: Double(data.current.sunrise ?? 0))
+        let sunsetDate = Date(timeIntervalSince1970: Double(data.current.sunset ?? 0))
+        
+        let sunriseString = dateFormatter.string(from: sunriseDate)
+        let sunsetString = dateFormatter.string(from: sunsetDate)
+
+        sunriseTimeLabel.animateWith(text: sunriseString)
+        sunsetTimeLabel.animateWith(text: sunsetString)
+    }
+}
