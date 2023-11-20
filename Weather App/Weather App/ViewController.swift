@@ -412,4 +412,4 @@ extension ViewController {
     func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         print("Changing the cell order, moving: \(sourceIndexPath.row) to \(destinationIndexPath.row)")
     }
-}
+} 
