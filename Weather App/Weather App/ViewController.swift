@@ -480,3 +480,39 @@ extension ViewController: UIActionSheetDelegate {
     }
     
 }
+
+
+extension ViewController: UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
+        guard let selectedCity = self.selectedCity,
+        let cityTag = cityTag else { return }
+        saveColorToDatabaseFor(city: selectedCity, colorHex: viewController.selectedColor.toHex ?? "", cityTag: cityTag) {
+            DispatchQueue.main.async  {
+                self.selectedCity = nil
+                self.cityTag = nil
+                self.reloadCityList()
+            }
+        }
+    }
+        
+    func showInputAlert(city: String, completion: @escaping (String?) -> Void) {
+        let alertController = UIAlertController(title: "Enter Tag", message: "Please enter a tag for \(city)", preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Custom Tag"
+            textField.autocapitalizationType = .words
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            completion(nil)
+        }
+        let saveAction = UIAlertAction(title: "Save", style: .default) { _ in
+            if let cityNameTag = alertController.textFields?.first?.text {
+                completion(cityNameTag)
+            } else {
+                completion(nil)
+            }
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(saveAction)
+        present(alertController, animated: true, completion: nil)
+    }
+}
